@@ -16,19 +16,26 @@ import VoiceNavigation from "@/components/voice-navigation"
 export default function Home() {
   const [isDark, setIsDark] = useState(false)
 
+  // Apply dark class to <html> when theme changes
   useEffect(() => {
     const savedTheme = localStorage.getItem("theme")
-    if (savedTheme) {
-      setIsDark(savedTheme === "dark")
-    } else {
-      setIsDark(window.matchMedia("(prefers-color-scheme: dark)").matches)
-    }
+    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches
+
+    const effectiveDark = savedTheme
+      ? savedTheme === "dark"
+      : prefersDark
+
+    setIsDark(effectiveDark)
+    document.documentElement.classList.toggle("dark", effectiveDark)
   }, [])
 
+  // Toggle theme
   const toggleTheme = () => {
     const newTheme = !isDark
     setIsDark(newTheme)
+
     localStorage.setItem("theme", newTheme ? "dark" : "light")
+    document.documentElement.classList.toggle("dark", newTheme)
   }
 
   const scrollToSection = (sectionId: string) => {

@@ -15,10 +15,10 @@ const navItems = [
 
 interface NavigationProps {
   isDark: boolean
-  setIsDark: (isDark: boolean) => void
+  onToggleTheme: () => void
 }
 
-export default function Navigation({ isDark, setIsDark }: NavigationProps) {
+export default function Navigation({ isDark, onToggleTheme }: NavigationProps) {
   const [isScrolled, setIsScrolled] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
@@ -39,7 +39,7 @@ export default function Navigation({ isDark, setIsDark }: NavigationProps) {
   }
 
   const handleThemeToggle = () => {
-    setIsDark(!isDark)
+    onToggleTheme() // ✅ Using parent callback, not setIsDark
   }
 
   const textColor = isDark ? "text-white/80 hover:text-white" : "text-gray-700 hover:text-gray-900"

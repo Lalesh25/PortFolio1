@@ -84,13 +84,14 @@ export function useVoiceNavigation({ onNavigate, onToggleTheme, onOpenContact, i
   const [showHelp, setShowHelp] = useState(false)
   const [permissionStatus, setPermissionStatus] = useState<"granted" | "denied" | "prompt" | "unknown">("unknown")
   const [error, setError] = useState<string>("")
+  const [isInitialized, setIsInitialized] = useState(false)
 
   const recognitionRef = useRef<any>(null)
   const timeoutRef = useRef<NodeJS.Timeout>()
 
-  // Check browser support and permissions
+  // Check browser support and initialize
   useEffect(() => {
-    const checkSupport = async () => {
+    const initializeVoiceRecognition = async () => {
       if (typeof window === "undefined") return
 
       // Check if speech recognition is supported
@@ -104,72 +105,96 @@ export function useVoiceNavigation({ onNavigate, onToggleTheme, onOpenContact, i
 
       setIsSupported(true)
 
+      // Check if we're on HTTPS or localhost (required for microphone access)
+      const isSecureContext =
+        window.location.protocol === "https:" ||
+        window.location.hostname === "localhost" ||
+        window.location.hostname === "127.0.0.1"
+
+      if (!isSecureContext) {
+        setError("Voice commands require HTTPS. Please access the site via HTTPS.")
+        return
+      }
+
       // Check microphone permissions
       try {
-        const permission = await navigator.permissions.query({ name: "microphone" as PermissionName })
-        setPermissionStatus(permission.state)
-
-        permission.addEventListener("change", () => {
+        if (navigator.permissions) {
+          const permission = await navigator.permissions.query({ name: "microphone" as PermissionName })
           setPermissionStatus(permission.state)
-        })
+
+          permission.addEventListener("change", () => {
+            setPermissionStatus(permission.state)
+          })
+        } else {
+          setPermissionStatus("prompt")
+        }
       } catch (err) {
         console.log("Permission API not supported, will request permission on first use")
         setPermissionStatus("prompt")
       }
 
       // Initialize speech recognition
-      const recognition = new SpeechRecognition()
-      recognition.continuous = false
-      recognition.interimResults = false
-      recognition.lang = "en-US"
-      recognition.maxAlternatives = 1
+      try {
+        const recognition = new SpeechRecognition()
+        recognition.continuous = false
+        recognition.interimResults = false
+        recognition.lang = "en-US"
+        recognition.maxAlternatives = 1
 
-      recognition.onstart = () => {
-        setIsListening(true)
-        setTranscript("")
-        setError("")
-        console.log("Voice recognition started")
-      }
-
-      recognition.onresult = (event: any) => {
-        const result = event.results[0][0].transcript.toLowerCase().trim()
-        console.log("Voice input received:", result)
-        setTranscript(result)
-        processVoiceCommand(result)
-      }
-
-      recognition.onerror = (event: any) => {
-        console.error("Speech recognition error:", event.error)
-        setIsListening(false)
-
-        switch (event.error) {
-          case "not-allowed":
-            setError("Microphone access denied. Please allow microphone access and try again.")
-            setPermissionStatus("denied")
-            break
-          case "no-speech":
-            setError("No speech detected. Please try again.")
-            break
-          case "audio-capture":
-            setError("No microphone found. Please check your microphone connection.")
-            break
-          case "network":
-            setError("Network error. Please check your internet connection.")
-            break
-          default:
-            setError(`Speech recognition error: ${event.error}`)
+        recognition.onstart = () => {
+          console.log("Voice recognition started")
+          setIsListening(true)
+          setTranscript("")
+          setError("")
         }
-      }
 
-      recognition.onend = () => {
-        setIsListening(false)
-        console.log("Voice recognition ended")
-      }
+        recognition.onresult = (event: any) => {
+          const result = event.results[0][0].transcript.toLowerCase().trim()
+          console.log("Voice input received:", result)
+          setTranscript(result)
+          processVoiceCommand(result)
+        }
 
-      recognitionRef.current = recognition
+        recognition.onerror = (event: any) => {
+          console.error("Speech recognition error:", event.error)
+          setIsListening(false)
+
+          switch (event.error) {
+            case "not-allowed":
+              setError("Microphone access denied. Please allow microphone access and try again.")
+              setPermissionStatus("denied")
+              break
+            case "no-speech":
+              setError("No speech detected. Please try speaking again.")
+              break
+            case "audio-capture":
+              setError("No microphone found. Please check your microphone connection.")
+              break
+            case "network":
+              setError("Network error. Please check your internet connection.")
+              break
+            case "service-not-allowed":
+              setError("Speech service not allowed. Please check your browser settings.")
+              break
+            default:
+              setError(`Speech recognition error: ${event.error}`)
+          }
+        }
+
+        recognition.onend = () => {
+          console.log("Voice recognition ended")
+          setIsListening(false)
+        }
+
+        recognitionRef.current = recognition
+        setIsInitialized(true)
+      } catch (err) {
+        console.error("Error initializing speech recognition:", err)
+        setError("Failed to initialize voice recognition.")
+      }
     }
 
-    checkSupport()
+    initializeVoiceRecognition()
   }, [])
 
   const processVoiceCommand = useCallback(
@@ -265,24 +290,60 @@ export function useVoiceNavigation({ onNavigate, onToggleTheme, onOpenContact, i
     }
   }
 
-  const requestMicrophonePermission = async () => {
+  const requestMicrophonePermission = async (): Promise<boolean> => {
     try {
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true })
-      stream.getTracks().forEach((track) => track.stop()) // Stop the stream immediately
+      console.log("Requesting microphone permission...")
+
+      // First try to get user media to trigger permission prompt
+      const stream = await navigator.mediaDevices.getUserMedia({
+        audio: {
+          echoCancellation: true,
+          noiseSuppression: true,
+          autoGainControl: true,
+        },
+      })
+
+      console.log("Microphone permission granted")
+
+      // Stop the stream immediately as we only needed it for permission
+      stream.getTracks().forEach((track) => {
+        track.stop()
+      })
+
       setPermissionStatus("granted")
+      setError("")
       return true
-    } catch (err) {
+    } catch (err: any) {
       console.error("Microphone permission denied:", err)
+
+      if (err.name === "NotAllowedError") {
+        setError(
+          "Microphone access denied. Please click the microphone icon in your browser's address bar and allow access.",
+        )
+      } else if (err.name === "NotFoundError") {
+        setError("No microphone found. Please connect a microphone and try again.")
+      } else if (err.name === "NotSupportedError") {
+        setError("Microphone access not supported in this browser.")
+      } else {
+        setError("Failed to access microphone. Please check your browser settings.")
+      }
+
       setPermissionStatus("denied")
-      setError(
-        "Microphone access is required for voice commands. Please allow microphone access in your browser settings.",
-      )
       return false
     }
   }
 
   const startListening = useCallback(async () => {
-    if (!recognitionRef.current || isListening) return
+    if (!recognitionRef.current || isListening || !isInitialized) {
+      console.log("Cannot start listening:", {
+        hasRecognition: !!recognitionRef.current,
+        isListening,
+        isInitialized,
+      })
+      return
+    }
+
+    console.log("Attempting to start listening...")
 
     // Check and request permissions if needed
     if (permissionStatus === "denied") {
@@ -291,26 +352,38 @@ export function useVoiceNavigation({ onNavigate, onToggleTheme, onOpenContact, i
     }
 
     if (permissionStatus === "prompt" || permissionStatus === "unknown") {
+      console.log("Requesting microphone permission...")
       const hasPermission = await requestMicrophonePermission()
-      if (!hasPermission) return
+      if (!hasPermission) {
+        return
+      }
     }
 
     try {
       setError("")
+      console.log("Starting speech recognition...")
       recognitionRef.current.start()
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error starting recognition:", error)
-      setError("Failed to start voice recognition. Please try again.")
+
+      if (error.name === "InvalidStateError") {
+        setError("Speech recognition is already running. Please wait and try again.")
+      } else {
+        setError("Failed to start voice recognition. Please try again.")
+      }
     }
-  }, [isListening, permissionStatus])
+  }, [isListening, permissionStatus, isInitialized])
 
   const stopListening = useCallback(() => {
     if (recognitionRef.current && isListening) {
+      console.log("Stopping speech recognition...")
       recognitionRef.current.stop()
     }
   }, [isListening])
 
   const toggleListening = useCallback(() => {
+    console.log("Toggle listening:", { isListening, isSupported, isInitialized })
+
     if (isListening) {
       stopListening()
     } else {
@@ -325,7 +398,11 @@ export function useVoiceNavigation({ onNavigate, onToggleTheme, onOpenContact, i
         clearTimeout(timeoutRef.current)
       }
       if (recognitionRef.current) {
-        recognitionRef.current.abort()
+        try {
+          recognitionRef.current.abort()
+        } catch (err) {
+          console.log("Error aborting recognition:", err)
+        }
       }
     }
   }, [])
@@ -343,5 +420,6 @@ export function useVoiceNavigation({ onNavigate, onToggleTheme, onOpenContact, i
     voiceCommands,
     permissionStatus,
     error,
+    isInitialized,
   }
 }
