@@ -84,7 +84,7 @@ export default function Hero({ isDark }: HeroProps) {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.4 }}
           >
-            <img src="rounded-photo.jpg"  alt="My photo" width={200} height={200}/>
+            <img className="mx-auto" src="rounded-photo.jpg"  alt="My photo" width={200} height={200}/>
             <span className="bg-gradient-to-r from-purple-400 via-pink-400 to-blue-400 bg-clip-text text-transparent">
               Lalesh Pawar
             </span>
