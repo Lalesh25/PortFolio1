@@ -28,9 +28,9 @@ const skillCategories: SkillCategory[] = [
     color: "from-blue-500 to-cyan-500",
     skills: [
       { name: "React/Next.js", level: 95, category: "frontend" },
-      { name: "TypeScript", level: 90, category: "frontend" },
-      { name: "Tailwind CSS", level: 88, category: "frontend" },
+      { name: "HTML/CSS", level: 94, category: "frontend" },
       { name: "JavaScript", level: 92, category: "frontend" },
+      { name: "Tailwind CSS", level: 88, category: "frontend" },
     ],
   },
   {
@@ -53,6 +53,19 @@ const skillCategories: SkillCategory[] = [
       { name: "PostgreSQL", level: 78, category: "database" },
       { name: "AWS", level: 75, category: "database" },
       { name: "Firebase", level: 80, category: "database" },
+    ],
+  },
+  {
+    title: "Data Science & AI",
+    icon: <Database className="w-6 h-6" />,
+    color: "from-green-500 to-blue-500",
+    skills: [
+      { name: "Pandas", level: 88, category: "datascience" },
+      { name: "NumPy", level: 85, category: "datascience" },
+      { name: "Matplotlib", level: 82, category: "datascience" },
+      { name: "Seaborn", level: 80, category: "datascience" },
+      { name: "Machine Learning", level: 82, category: "datascience" },
+      { name: "Deep Learning", level: 78, category: "datascience" },
     ],
   },
   {
@@ -236,52 +249,6 @@ export default function SkillsSimple({ isDark }: SkillsSimpleProps) {
             </motion.div>
           ))}
         </div>
-
-        {/* Additional Skills Section */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.4 }}
-          className="mt-16 text-center"
-        >
-          <h3 className="text-2xl font-semibold mb-8">Additional Technologies</h3>
-          <div className="flex flex-wrap justify-center gap-3">
-            {[
-              "GraphQL",
-              "Redux",
-              "Sass",
-              "Webpack",
-              "Jest",
-              "Cypress",
-              "Linux",
-              "Nginx",
-              "Redis",
-              "Elasticsearch",
-              "Kubernetes",
-            ].map((tech, index) => (
-              <motion.div
-                key={tech}
-                initial={{ opacity: 0, scale: 0.8 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.3, delay: index * 0.05 }}
-                whileHover={{ scale: 1.05 }}
-              >
-                <Badge
-                  variant="outline"
-                  className={`px-4 py-2 text-sm font-medium cursor-pointer transition-all duration-200 ${
-                    isDark
-                      ? "border-gray-700 text-gray-300 hover:border-purple-500 hover:text-purple-400"
-                      : "border-gray-300 text-gray-700 hover:border-purple-500 hover:text-purple-600"
-                  }`}
-                >
-                  {tech}
-                </Badge>
-              </motion.div>
-            ))}
-          </div>
-        </motion.div>
       </div>
     </section>
   )
