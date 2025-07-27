@@ -4,8 +4,8 @@ import { motion } from "framer-motion"
 import { Github, Linkedin, Twitter, Mail, Heart } from "lucide-react"
 
 const socialLinks = [
-  { icon: Github, href: "https://github.com/YourNewUsername", label: "GitHub" },
-  { icon: Linkedin, href: "https://www.linkedin.com/feed/", label: "LinkedIn" },
+  { icon: Github, href: "https://github.com/Lalesh25", label: "GitHub" },
+  { icon: Linkedin, href: "https://www.linkedin.com/in/laleshpawar25/", label: "LinkedIn" },
   { icon: Twitter, href: "#", label: "Twitter" },
   { icon: Mail, href: "mailto:laleshpawar2025@gmail.com", label: "Email" },
 ]
