@@ -18,7 +18,7 @@ const projects = [
     image: "/images/devhub-elearning.jpeg",
     technologies: ["React", "Node.js", "MongoDB", "Express.js", "JWT", "Cloudinary"],
     liveUrl: "https://dev-hub-frontend-lw32.vercel.app/",
-    githubUrl: "https://github.com/YourNewUsername/DevHub-frontend",
+    githubUrl: "https://github.com/Lalesh25/DevHub-frontend",
   },
   {
     id: 2,
@@ -29,7 +29,7 @@ const projects = [
     image: "/images/real-time-compiler.jpg",
     technologies: ["React", "Node.js", "MongoDB", "WebSocket", "Monaco Editor", "Docker"],
     liveUrl: "#",
-    githubUrl: "https://github.com/YourNewUsername/RealTimeCodeCompiler",
+    githubUrl: "https://github.com/Lalesh25/RealTimeCodeCompiler",
   },
   {
     id: 3,
@@ -40,7 +40,7 @@ const projects = [
     image: "/images/mathgenie-calculator.avif",
     technologies: ["Python", "React", "TensorFlow", "OpenCV", "Flask", "Canvas API"],
     liveUrl: "#",
-    githubUrl: "https://github.com/YourNewUsername/MathGenie-Calculator",
+    githubUrl: "https://github.com/Lalesh25/MathGenie-Calculator",
   },
   {
     id: 4,
@@ -51,7 +51,7 @@ const projects = [
     image: "/images/ai-photo-editor.jpg",
     technologies: ["Next.js", "Fabric.js", "Tailwind CSS", "ImageKit", "Shadcn UI", "AI APIs"],
     liveUrl: "#",
-    githubUrl: "https://github.com/YourNewUsername/AI-Photo-Editor",
+    githubUrl: "https://github.com/Lalesh25/AI-Photo-Editor",
   },
 ]
 
