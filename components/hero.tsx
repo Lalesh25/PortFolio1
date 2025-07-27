@@ -1,6 +1,7 @@
 "use client"
 
 import { useRef, useMemo } from "react"
+import Image from "next/image";
 import { Canvas, useFrame } from "@react-three/fiber"
 import { Points, PointMaterial } from "@react-three/drei"
 import { motion } from "framer-motion"
@@ -83,6 +84,7 @@ export default function Hero({ isDark }: HeroProps) {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.4 }}
           >
+            <img src="rounded-photo.jpg"  alt="My photo" width={200} height={200}/>
             <span className="bg-gradient-to-r from-purple-400 via-pink-400 to-blue-400 bg-clip-text text-transparent">
               Lalesh Pawar
             </span>
