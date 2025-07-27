@@ -1,0 +1,37 @@
+LaleshPawar
+laleshpawar2025@gmail.com|+917066055969
+GitHub: https://github.com/YourNewUsername|linkedin|blog
+
+Education
+DBATU
+Full-time B.TECH in Computer Science and Engineering 2022-11-01 - Present
+CGPA: 8.09
+
+Experience
+Goldman Sachs | Software Engineering Virtual Experience Program Remote | July 2024 - May 2024
+Completed a job simulation as a Goldman Sachs governance analyst responsible for assessing IT security and suggesting improvements. Identified that the company was using an outdated password hashing algorithm by cracking passwords using Hashcat. Wrote a memo for my supervisor summarizing a range of proposed uplifts to increase the company's level of password protection including extending minimum password length and using a dedicated hashing algorithm.
+
+Internshala | ISP Remote | October 2024 - January 2025
+Internshala Student Partner (ISP) (Remote, Oct 2024 - Jan 2025) - Promoted Internshala programs at university and built student engagement through campaigns. - Enhanced leadership and communication by managing outreach and peer coordination.
+
+Skills
+Programming Languages: C++, JavaScript, HTML, CSS, Python
+Libraries/Frameworks: React, Tailwind, Node.js, Express.js, Pandas, Numpy, Matplotlib
+Tools/Platforms: Git, GitHub, VS Code
+Databases: SQL, MongoDB
+
+Projects/Open-Source
+Real Time Compiler | https://github.com/YourNewUsername/RealTimeCodeCompiler MERN
+Built a web-based real-time compiler using the MERN stack and Monaco Editor with live code collaboration. Integrated backend code execution, real-time syncing via WebSockets, and support for multiple programming languages with secure execution.
+
+StudyNotion | https://github.com/YourNewUsername/DevHub-frontend MERN
+Designed and developed a full-stack web application with features including separate admin and student login access, course management (upload and view with video playback), OTP verification through email validation, course ratings and reviews, and a feedback system. The website is fully responsive, ensuring optimal usability across devices.
+
+AI Powered Calculator | https://github.com/YourNewUsername/MathGenie-Calculator Python, React
+The AI-Powered Calculator That Brings Your Drawings to Life and solve the mathematics problems by using Drawing and notations.
+
+AI powered Photo Editor | https://github.com/YourNewUsername/AI-Photo-Editor Next.js, Fabric.js, Tailwind, ImageKit, Shadcn UI
+AI powered Photo editor which can be used to edit your photo on an next level with the help of AI features and with speed and accuracy.
+
+Certifications
+Software Engineering Simulation - Forage Goldman Sachs
