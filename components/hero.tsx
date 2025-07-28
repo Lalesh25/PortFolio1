@@ -134,8 +134,8 @@ export default function Hero({ isDark }: HeroProps) {
             transition={{ duration: 0.8, delay: 1 }}
           >
             {[
-              { icon: Github, href: "https://github.com/YourNewUsername" },
-              { icon: Linkedin, href: "https://www.linkedin.com/feed/" },
+              { icon: Github, href: "https://github.com/Lalesh25" },
+              { icon: Linkedin, href: "https://www.linkedin.com/in/laleshpawar25/" },
               { icon: Mail, href: "mailto:laleshpawar2025@gmail.com" },
             ].map((social, index) => (
               <motion.a
