@@ -17,7 +17,7 @@ const projects = [
       "A full-featured e-learning platform with separate admin and student login access, course management with upload and view capabilities, video playback functionality, OTP verification through email validation, course ratings and reviews, and a comprehensive feedback system. The website is fully responsive, ensuring optimal usability across all devices.",
     image: "/images/devhub-elearning.jpeg",
     technologies: ["React", "Node.js", "MongoDB", "Express.js", "JWT", "Cloudinary"],
-    liveUrl: "https://dev-hub-frontend-lw32.vercel.app/",
+    liveUrl: "https://dev-hub-frontend-wv6z.vercel.app/",
     githubUrl: "https://github.com/Lalesh25/DevHub-frontend",
   },
   {
